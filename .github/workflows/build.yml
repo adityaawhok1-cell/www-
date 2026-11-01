@@ -33,6 +33,11 @@ jobs:
           npx cap add android
           npx cap sync android
 
+      - name: Kunci layar landscape
+        run: |
+          sed -i 's/<activity/<activity android:screenOrientation="sensorLandscape"/' android/app/src/main/AndroidManifest.xml
+          grep -n screenOrientation android/app/src/main/AndroidManifest.xml
+
       - name: Build APK debug
         working-directory: android
         run: |
