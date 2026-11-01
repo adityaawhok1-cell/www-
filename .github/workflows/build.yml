@@ -21,6 +21,8 @@ jobs:
 
       - name: Siapkan project Capacitor
         run: |
+          mkdir -p www
+          [ -f index.html ] && cp index.html www/index.html || true
           npm init -y
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           cat > capacitor.config.json << 'CFG'
@@ -32,6 +34,11 @@ jobs:
           CFG
           npx cap add android
           npx cap sync android
+
+      - name: Layar penuh (sembunyikan status bar)
+        run: |
+          sed -i 's|<style name="AppTheme.NoActionBar" parent="\(.*\)">|&\n        <item name="android:windowFullscreen">true</item>|' android/app/src/main/res/values/styles.xml
+          grep -n windowFullscreen android/app/src/main/res/values/styles.xml || true
 
       - name: Kunci layar landscape
         run: |
